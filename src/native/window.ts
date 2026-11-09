@@ -5,14 +5,17 @@ import {
   Menu,
   MenuItem,
   app,
+  desktopCapturer,
   ipcMain,
   nativeImage,
+  session,
 } from "electron";
 
 import windowIconAsset from "../../assets/desktop/icon.png?asset";
 
 import { config } from "./config";
 import { updateTrayMenu } from "./tray";
+import { startVirtualMic } from "./virtualMic";
 
 // Surprisingly, I am having a lot of trouble figuring out what to name this?
 // I want the warning to actually warn the end user instead of just being a
@@ -46,6 +49,7 @@ export function createMainWindow() {
   // (CLI arg --hidden or config)
   const startHidden =
     app.commandLine.hasSwitch("hidden") || config.startMinimisedToTray;
+  const isMacOS = process.platform === "darwin";
 
   // create the window
   mainWindow = new BrowserWindow({
@@ -54,7 +58,9 @@ export function createMainWindow() {
     width: 1280,
     height: 720,
     backgroundColor: "#191919",
-    frame: !config.customFrame,
+    frame: isMacOS ? true : !config.customFrame,
+    titleBarStyle: isMacOS ? "hidden" : "default",
+    trafficLightPosition: isMacOS ? { x: 8, y: 8 } : undefined,
     icon: windowIcon,
     show: !startHidden,
     webPreferences: {
@@ -86,12 +92,14 @@ export function createMainWindow() {
   }
 
   // maximise the window if it was maximised before
-  if (config.windowState.isMaximised) {
+  if (config.windowState.isMaximised && !startHidden) {
     mainWindow.maximize();
   }
 
   // load the entrypoint
-  mainWindow.loadURL(BUILD_URL.toString());
+  mainWindow
+    .loadURL(BUILD_URL.toString())
+    .then(() => mainWindow.webContents.reload());
 
   // minimise window to tray
   mainWindow.on("close", (event) => {
@@ -216,18 +224,90 @@ export function createMainWindow() {
     }
   });
 
-  // push world events to the window
-  ipcMain.on("minimise", () => mainWindow.minimize());
-  ipcMain.on("maximise", () =>
-    mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize(),
+  // Create display media request handler
+  session.defaultSession.setDisplayMediaRequestHandler(
+    (request, originalCallback) => {
+      const callback = async (streams: Electron.Streams) => {
+        try {
+          if (streams.video) await startVirtualMic();
+        } catch (e) {
+          console.error("Virtual mic setup error", e);
+        } finally {
+          originalCallback(streams);
+        }
+      };
+      desktopCapturer
+        .getSources({ types: ["screen", "window"], fetchWindowIcons: true })
+        .then((sources) => {
+          // Shortcut for linux wayland.
+          if (sources.length == 1) {
+            request.audioRequested
+              ? callback({
+                  video: sources[0],
+                  audio: "loopback",
+                })
+              : callback({
+                  video: sources[0],
+                });
+            return;
+          }
+          ipcMain.once(
+            "screenPickerCallback",
+            (_, idx: number, audio: boolean) => {
+              if (idx < 0 || idx > sources.length) {
+                callback({});
+              } else {
+                audio
+                  ? callback({
+                      video: sources[idx],
+                      audio: "loopback",
+                    })
+                  : callback({
+                      video: sources[idx],
+                    });
+              }
+            },
+          );
+          mainWindow.webContents.send(
+            "screenPicker",
+            sources.map((source, idx) => {
+              const image = source.appIcon;
+              if (image) {
+                if (image.getAspectRatio() > 1) {
+                  image.resize({ width: 256 });
+                } else {
+                  image.resize({ height: 256 });
+                }
+              }
+              return {
+                idx: idx,
+                name: source.name,
+                isFullScreen: source.id.startsWith("screen"),
+                image: image?.toDataURL(),
+              };
+            }),
+          );
+        })
+        .catch(() => originalCallback(null));
+    },
+    { useSystemPicker: true },
   );
-  ipcMain.on("close", () => mainWindow.close());
 
   // mainWindow.webContents.openDevTools();
 
   // let i = 0;
   // setInterval(() => setBadgeCount((++i % 30) + 1), 1000);
 }
+
+// Push world events to the window
+//
+// The window can in theory be recreated, and this is done in practice on macOS,
+// so this is registered app-wide
+ipcMain.on("minimise", () => mainWindow?.minimize());
+ipcMain.on("maximise", () =>
+  mainWindow?.isMaximized() ? mainWindow.unmaximize() : mainWindow?.maximize(),
+);
+ipcMain.on("close", () => mainWindow?.close());
 
 /**
  * Quit the entire app

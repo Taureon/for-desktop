@@ -1,5 +1,89 @@
 # Changelog
 
+## [1.5.4](https://github.com/stoatchat/for-desktop/compare/v1.5.3...v1.5.4) (2026-09-15)
+
+
+### Bug Fixes
+
+* Ensure that autolaunch is configured ([#294](https://github.com/stoatchat/for-desktop/issues/294)) ([c1df8a7](https://github.com/stoatchat/for-desktop/commit/c1df8a7afece95623992e3eaeaa5508437bdda7f))
+* Remove tmpdir env as it's not needed anymore ([#295](https://github.com/stoatchat/for-desktop/issues/295)) ([68cfeb5](https://github.com/stoatchat/for-desktop/commit/68cfeb5c8e802fc30c5dc774b617b3371811753d))
+* Update to electron 44 and fix flatpak icon ([#312](https://github.com/stoatchat/for-desktop/issues/312)) ([383d9f3](https://github.com/stoatchat/for-desktop/commit/383d9f3e53a3cc124014d4233cbfb638ed1dd3ae))
+
+## [1.5.3](https://github.com/stoatchat/for-desktop/compare/v1.5.2...v1.5.3) (2026-08-19)
+
+
+### Bug Fixes
+
+* Add temp appimage workflow, fix some ci/cd bugs ([#285](https://github.com/stoatchat/for-desktop/issues/285)) ([b6b90c4](https://github.com/stoatchat/for-desktop/commit/b6b90c4304706f480fd98cb7e3ed8c4cfe0c6b5d))
+
+
+### Reverts
+
+* Add Mic and Webcam Entitlements ([#259](https://github.com/stoatchat/for-desktop/issues/259)) ([#283](https://github.com/stoatchat/for-desktop/issues/283)) ([644f076](https://github.com/stoatchat/for-desktop/commit/644f0765b4d2f83656ea0868f4898091ca9f6442))
+
+## [1.5.2](https://github.com/stoatchat/for-desktop/compare/v1.5.1...v1.5.2) (2026-08-17)
+
+
+### Bug Fixes
+
+* Remove node-pipewire submodule and actually package native dep ([#280](https://github.com/stoatchat/for-desktop/issues/280)) ([09f1bc0](https://github.com/stoatchat/for-desktop/commit/09f1bc06b602fd64ee560a1dd42db8f5dafd3f96))
+
+## [1.5.1](https://github.com/stoatchat/for-desktop/compare/v1.5.0...v1.5.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* Release please failed to add a remote ([#275](https://github.com/stoatchat/for-desktop/issues/275)) ([dc3762c](https://github.com/stoatchat/for-desktop/commit/dc3762c1344a41658fc298dbe328ba641859130e))
+* Release please failed to add a remote and used wrong matrix ([dc3762c](https://github.com/stoatchat/for-desktop/commit/dc3762c1344a41658fc298dbe328ba641859130e))
+* upload appimage zsyncs too ([#279](https://github.com/stoatchat/for-desktop/issues/279)) ([63794c7](https://github.com/stoatchat/for-desktop/commit/63794c722bec9e0fba93afadd85ec989d625693b))
+
+## [1.5.0](https://github.com/stoatchat/for-desktop/compare/v1.4.2...v1.5.0) (2026-08-16)
+
+
+### Features
+
+* Add a virtual microphone for audio streaming on linux ([#266](https://github.com/stoatchat/for-desktop/issues/266)) ([e5dc6ee](https://github.com/stoatchat/for-desktop/commit/e5dc6ee4fc65286581c65873a42147f8a017cf81))
+* Add AppImage build flow to release ([#271](https://github.com/stoatchat/for-desktop/issues/271)) ([1fbd6f7](https://github.com/stoatchat/for-desktop/commit/1fbd6f7dfb48363effc64948a133461cffd97b3b))
+* Add flatpak build to release-please and update flatpak ([#228](https://github.com/stoatchat/for-desktop/issues/228)) ([c557333](https://github.com/stoatchat/for-desktop/commit/c5573330a93927b60aa404561069c20d06dd48b4))
+* Add Mic and Webcam Entitlements for MacOS ([85cbaaf](https://github.com/stoatchat/for-desktop/commit/85cbaaffa5a602cffa0fdedf50a00ec8b03911eb))
+
+
+### Bug Fixes
+
+* Add Mic and Webcam Entitlements ([#259](https://github.com/stoatchat/for-desktop/issues/259)) ([85cbaaf](https://github.com/stoatchat/for-desktop/commit/85cbaaffa5a602cffa0fdedf50a00ec8b03911eb))
+* Add this missing ' ([#274](https://github.com/stoatchat/for-desktop/issues/274)) ([f7223bc](https://github.com/stoatchat/for-desktop/commit/f7223bcddbbbcb9a7b84edbfbacf3a920759083d))
+* skip maximise if starting to tray ([#183](https://github.com/stoatchat/for-desktop/issues/183)) ([8192855](https://github.com/stoatchat/for-desktop/commit/8192855a04dae4f61b571fdbc2953073d4a1db4e))
+* Update electron to remove stream echo on windows and mac ([e5dc6ee](https://github.com/stoatchat/for-desktop/commit/e5dc6ee4fc65286581c65873a42147f8a017cf81))
+* Use liquid glass icon on MacOS ([#258](https://github.com/stoatchat/for-desktop/issues/258)) ([9e1df87](https://github.com/stoatchat/for-desktop/commit/9e1df87a4ee1604b0bfd143ce4507ea2f0e37e63))
+* What if we just reloaded every startup, would that kill cache? ([#269](https://github.com/stoatchat/for-desktop/issues/269)) ([f79b113](https://github.com/stoatchat/for-desktop/commit/f79b113da1b6581332c4ef9dfb58018f668a6366))
+
+## [1.4.2](https://github.com/stoatchat/for-desktop/compare/v1.4.1...v1.4.2) (2026-07-17)
+
+
+### Bug Fixes
+
+* Don't send audio as undefined and instead omit it ([#241](https://github.com/stoatchat/for-desktop/issues/241)) ([dc20b6e](https://github.com/stoatchat/for-desktop/commit/dc20b6e232e184ce1053cfdc7b83550e69ea285a))
+
+## [1.4.1](https://github.com/stoatchat/for-desktop/compare/v1.4.0...v1.4.1) (2026-07-16)
+
+
+### Bug Fixes
+
+* Do not enable autostart on first launch ([#237](https://github.com/stoatchat/for-desktop/issues/237)) ([e00f3a8](https://github.com/stoatchat/for-desktop/commit/e00f3a860c566ea1e8287573144c2e081d243664))
+* make electron use loopback instead of loopbackwithmute ([#236](https://github.com/stoatchat/for-desktop/issues/236)) ([1940938](https://github.com/stoatchat/for-desktop/commit/1940938850d9bf7d4821554dc2dbde96a9f94b8c))
+
+## [1.4.0](https://github.com/stoatchat/for-desktop/compare/v1.3.0...v1.4.0) (2026-06-16)
+
+
+### Features
+
+* enable screen sharing and integrate screen picker ([#207](https://github.com/stoatchat/for-desktop/issues/207)) ([c9d59ee](https://github.com/stoatchat/for-desktop/commit/c9d59ee044724cec86bc6a286ef1e34accf8c560))
+
+
+### Bug Fixes
+
+* **flatpak:** change screenshot path into an url in the metainfo file ([#195](https://github.com/stoatchat/for-desktop/issues/195)) ([74c941e](https://github.com/stoatchat/for-desktop/commit/74c941e5b83cd14ddecb74150d5a1d08c143278b))
+
 ## [1.3.0](https://github.com/stoatchat/for-desktop/compare/v1.2.0...v1.3.0) (2026-02-18)
 
 
